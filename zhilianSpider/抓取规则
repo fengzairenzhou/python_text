@@ -1,0 +1,27 @@
+职位类别列表   http://sou.zhaopin.com/
+
+抓取范围             //div[@id="search_bottom_content_demo"]/div[@class="clearfixed"]/h1
+所有职位类别列表名称     ./a/text()
+所有职位类别列表链接     ./a/@href   需加 'http://sou.zhaopin.com/'
+
+筛选详细链接:  http://sou.zhaopin.com/jobs/searchresult.ashx?bj=160000&sj=2039&in=160200&jl=%E5%8C%97%E4%BA%AC&p=1&isadv=0
+经分析发现bj,sj 是职位类别      in是行业类别    jl是城市   p是页数
+
+提取in      //div[@class="paddingTB"]/table//input/@value
+提取jl      //div[@class="sPopupTabCB"]/table//input/@value
+
+下一页      //a[@class="next-page"]/@href
+
+列表页提取详情页       //div[@id="newlist_list_content_table"]//div/a/@href
+
+职位详情     //div[@class="terminalpage-left"]/ul/li/strong/text()  工资，工作性质，工作经验，学历，招聘人数
+             //div[@class="terminalpage-left"]/ul/li/strong/a/text()  地点和类别
+             //div[@class="terminalpage-left"]/ul/li/strong/span/text()  发布日期
+
+职位名称     //div[@class="top-fixed-box"]//h1/text()
+公司名称     //div[@class="top-fixed-box"]//h2/a/text()
+公司位置     //div[@class="terminalpage-left"]//h2/text()
+
+职位描述和公司简介     //div[@class="terminalpage-left"]//div[@class="tab-inner-cont"]/p//span[@style]/text()
+                                |//div[@class="terminalpage-left"]//div[@style]/text()
+                       //div[@class="terminalpage-main clearfix"]

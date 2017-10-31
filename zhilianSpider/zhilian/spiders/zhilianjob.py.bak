@@ -1,0 +1,64 @@
+# -*- coding: utf-8 -*-
+import scrapy
+from lxml import etree
+import os
+
+class ZhilianjobSpider(scrapy.Spider):
+    name = 'zhilianjob'
+    allowed_domains = ['zhaopin.com']
+    start_urls = ['http://sou.zhaopin.com/']
+
+    # 获取工作类别
+    def parse(self, response):
+        # 获取行业类别链接
+        with open(os.path.join(os.path.dirname(__file__) + '\\type.html'), 'r') as f:
+            html = etree.HTML(f.read())
+            type_list = html.xpath('//div[@class="paddingTB"]/table//input/@value')
+            # print type_list
+
+        # 获取工作地点链接
+        with open(os.path.join(os.path.dirname(__file__) + '/city.html'), 'r') as f:
+            html = f.read()
+            html = etree.HTML(html)
+            city_list = html.xpath('//div[@class="sPopupTabCB"]/table//input/@value')
+            # print city_list
+
+        for each in response.xpath('//div[@id="search_bottom_content_demo"]/div[@class="clearfixed"]/h1'):
+            # 获取职位类别名
+            # position_list = each.xpath('./a/text()').extract()
+            # for job in position_list:
+            #     print job
+
+            # 获取职位链接
+            position_url = each.xpath('./a/@href').extract()
+            for url in position_url:
+                for types in type_list:
+                    for city in city_list:
+                        job_url = 'http://sou.zhaopin.com/'+url+'&in='+types+'&jl='+city
+
+                        yield scrapy.Request(job_url,callback=self.parse_list)
+
+    # 获取工作列表
+    def parse_list(self,response):
+        for i in response.xpath('//div[@id="newlist_list_content_table"]//div/a/@href').extract():
+            if 'jobs.zhaopin.com' in i:
+                print i
+        next_page = response.xpath('//a[@class="next-page"]/@href').extract()
+        if next_page:
+            yield scrapy.Request(next_page[0],callback=self.parse_list)
+
+    # 提取所需数据
+    def parse_detail(self,response):
+        for each in response.xpath('//div[@class="terminalpage-left"]'):
+            lists = each.xpath('./ul/li/strong').extract()
+            # money = lists[0]
+            # position = lists[1]
+            # pub_date = lists[2]
+            # work_xingzhi = lists[3]
+            # experience = lists[4]
+            # xueli = lists[5]
+            # zhaopin_num = lists[6]
+            # work_type = lists[7]
+
+            print lists
+            # discribe = each.xpath('.//div[@class="tab-inner-cont"]//p/text()').extract()
