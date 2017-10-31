@@ -1,0 +1,83 @@
+{% extends 'myadmin/base.html' %}
+
+
+	{% block content %}
+
+		<h3>
+			会员信息管理
+		</h3>
+		<form id="edit-profile" class="form-horizontal" action="{% url 'myadmin_usersinsert' %}" method="post">
+			{% csrf_token %}
+			<fieldset>
+				<legend>添加会员信息</legend>
+				<div class="control-group">
+					<label class="control-label" for="input01">账号:</label>
+					<div class="controls">
+						<input type="text" class="input-xlarge" name="username" placeholder="请输入正确的账号" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="input01">密码:</label>
+					<div class="controls">
+						<input type="password" class="input-xlarge" name="passwd" value="" placeholder="请输入6-18位密码" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="input01">重复密码:</label>
+					<div class="controls">
+						<input type="password" class="input-xlarge" name="repasswd" value="" placeholder="确认你的密码" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="input01">真实姓名:</label>
+					<div class="controls">
+						<input type="text" class="input-xlarge" name="name" placeholder="请输入真实姓名" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="input01">性别:</label>
+					<div class="controls">
+						<label>
+							<input type="radio" name="sex" value="1" checked>男
+							<input type="radio" name="sex" value="0" >女
+						</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="input01">地址:</label>
+					<div class="controls">
+						<input type="text" class="input-xlarge" name="address" placeholder="北京市朝阳区" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="input01">邮编:</label>
+					<div class="controls">
+						<input type="text" class="input-xlarge" name="code" value="" placeholder="100020" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="input01">电话:</label>
+					<div class="controls">
+						<input type="text" class="input-xlarge" name="phone" value="" placeholder="请输入正确手机号" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="input01">Email邮箱:</label>
+					<div class="controls">
+						<input type="text" class="input-xlarge" name="email" value="" placeholder="john.smith@example.org" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="input01">添加时间</label>
+					<div class="controls">
+						<input type="text" class="input-xlarge" name="addtime" value="" />
+					</div>
+				</div>
+				<div class="form-actions">
+					<button type="submit" class="btn btn-primary">添加</button> 
+					<button class="btn">重置</button>
+				</div>
+			</fieldset>
+		</form>
+				
+	{% endblock %}

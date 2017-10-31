@@ -1,0 +1,89 @@
+{% extends "myweb/base.html" %}
+{% load static from staticfiles %}
+    
+
+    {%block main_body%}
+    <!-- 主内容区域 --> 
+    <div class="product-big-title-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="product-bit-title text-center">
+                        <h2>商品分类</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <ul class="nav nav-tabs" style="margin-bottom: 30px;margin-top:30px;">
+                    <li class="">
+                        <a href="{{ request.path }}" title="全部">全部商品</a>
+                    </li>
+                    {% for tt in types %}
+                    <li class="">
+                        <a href="{{ request.path }}?ttid={{tt.id}}" title="{{ tt.name }}">{{ tt.name }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+        
+    <div class="single-product-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
+            <div class="row">
+                {% for goods in goodslist %}
+                <div class="col-md-3 col-sm-6">
+                    <div class="single-shop-product text-center">
+                        <div class="product-upper">
+                            <a href="{% url 'detail' goods.id %}">
+                                <img src="{% static 'goods/m_' %}{{ goods.picname}}" width="220" height="220" alt="">
+                            </a>
+                        </div>
+                        <h2><a href="{% url 'detail' goods.id %}">{{ goods.goods }}</a></h2>
+                        <div class="product-carousel-price">
+                            <ins>${{ goods.price }}</ins> <del>$999.00</del>
+                        </div>  
+                        
+                        <div class="product-option-shop">
+                            <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="70" rel="nofollow" href="/canvas/shop/?add-to-cart=70">加入购物车</a>
+                        </div>                       
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="product-pagination text-center">
+                        <nav>
+                          <ul class="pagination">
+                            <li>
+                              <a href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                              </a>
+                            </li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li>
+                              <a href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                              </a>
+                            </li>
+                          </ul>
+                        </nav>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{%endblock%}

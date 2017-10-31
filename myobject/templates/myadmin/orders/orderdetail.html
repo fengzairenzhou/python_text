@@ -1,0 +1,118 @@
+{% extends 'myadmin/base.html' %}
+
+	{% block content %}	
+
+
+		<h3>
+			订单信息查询
+		</h3>
+		<table class="table table-bordered table-striped">
+			<thead>
+                <tr>
+                    <th>订单号</th>
+                    <th class="product-thumbnail">图片</th>
+                    <th class="product-name">商品名称</th>
+                    <th class="product-price">单价</th>
+                    <th class="product-quantity">数量</th>
+                    <th class="product-subtotal">购买时间</th>
+                    <th>订单状态</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="cart_item">
+                    <td>{{detail.orderid}}</td>
+                    <td class="product-thumbnail">
+                        <img width="145" height="145" alt="{{ shop.goods }}" class="shop_thumbnail" src="/static/goods/s_{{ detail.img }}">
+                    </td>
+
+                    <td class="product-name">
+                        {{ detail.name }}
+                    </td>
+
+                    <td class="product-price">
+                        <span class="amount">{{ detail.price }}</span> 
+                    </td>
+
+                    <td class="product-quantity">
+                        {{detail.num}}
+                    </td>
+
+                    <td class="product-subtotal">
+                        {{detail.time}} 
+                    </td>
+                    <td class="product-name">
+                        {% if detail.status == 0 %}
+							新订单
+						{% elif detail.status == 1 %}
+							已发货
+						{% elif detail.status == 2 %}
+							已收货
+						{% else %}
+							无效订单
+						{% endif %}
+                    </td>
+                </tr>                                       
+            </tbody>
+		</table>
+		<table class="table table-bordered table-striped">
+			<thead>
+                <tr>
+                    <th>会员ID</th>
+                    <th class="product-thumbnail">联系人</th>
+                    <th class="product-name">地址</th>
+                    <th class="product-price">邮编</th>
+                    <th class="product-quantity">电话</th>
+                    <th class="product-subtotal">总金额</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="cart_item">
+                    <td>{{order.uid}}</td>
+                    <td class="product-thumbnail">
+                        {{order.linkman}}
+                    </td>
+
+                    <td class="product-name">
+                        {{ order.address }}
+                    </td>
+
+                    <td class="product-price">
+                        <span class="amount">{{ order.code }}</span> 
+                    </td>
+
+                    <td class="product-quantity">
+                        {{order.phone}}
+                    </td>
+
+                    <td class="product-subtotal">
+                        {{order.total}} 
+                    </td>
+                    
+                </tr>                                       
+            </tbody>
+		</table>				
+		<div class="pagination">
+			<ul>
+				<li class="disabled">
+					<a href="#">&laquo;</a>
+				</li>
+				<li class="active">
+					<a href="#">1</a>
+				</li>
+				<li>
+					<a href="#">2</a>
+				</li>
+				<li>
+					<a href="#">3</a>
+				</li>
+				<li>
+					<a href="#">4</a>
+				</li>
+				<li>
+					<a href="#">&raquo;</a>
+				</li>
+			</ul>
+		</div>
+
+	{% endblock %}

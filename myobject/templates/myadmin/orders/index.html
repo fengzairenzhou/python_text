@@ -1,0 +1,73 @@
+{% extends 'myadmin/base.html' %}
+
+	{% block content %}	
+
+
+		<h3>
+			订单信息查询
+		</h3>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>会员id</th>
+					<th>联系人</th>
+					<th>地址</th>
+					<th>电话</th>
+					<th>购买时间</th>
+					<th>总金额</th>
+					<th>状态</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			{% for orders in orderlist %}
+			<tbody>
+				<tr>
+					<td>{{ orders.uid }}</td>
+					<td>{{ orders.linkman }}</td>
+					<td>{{ orders.address }}</td>
+					<td>{{ orders.phone }}</td>
+					<td>{{ orders.addtime }}</td>
+					<td>{{ orders.total }}</td>
+					<td>
+					{% if orders.status == 0 %}
+						新订单
+					{% elif orders.status == 1 %}
+						已发货
+					{% elif orders.status == 2 %}
+						已收货
+					{% else %}
+						无效订单
+					{% endif %}
+					</td>
+					<td>
+						<a href="{% url 'myadmin_ordersdetail' orders.id %}" class="view-link">订单详情</a>
+						<a href="{% url 'myadmin_ordersedit' orders.id %}" class="view-link">状态修改</a>
+					</td>
+				</tr>				
+			</tbody>
+			{% endfor %}
+		</table>				
+		<div class="pagination">
+			<ul>
+				<li class="disabled">
+					<a href="#">&laquo;</a>
+				</li>
+				<li class="active">
+					<a href="#">1</a>
+				</li>
+				<li>
+					<a href="#">2</a>
+				</li>
+				<li>
+					<a href="#">3</a>
+				</li>
+				<li>
+					<a href="#">4</a>
+				</li>
+				<li>
+					<a href="#">&raquo;</a>
+				</li>
+			</ul>
+		</div>
+
+	{% endblock %}

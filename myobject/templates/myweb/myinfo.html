@@ -1,0 +1,116 @@
+{% extends "myweb/base.html" %}
+{% load static from staticfiles %}
+    
+
+    {%block main_body%}
+    <!-- 主内容区域 -->
+    
+    <div class="product-big-title-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="product-bit-title text-center">
+                        <h2>个人中心</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="single-product-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    
+                    <div class="single-sidebar">
+                        <h2 class="sidebar-title">个人中心</h2>
+                        <ul>
+                            <li><a href="#">我的信息</a></li>
+                            <li><a href="#">我的积分</a></li>
+                            <li><a href="#">我的优惠券</a></li>
+                            <li><a href="#">我的等级</a></li>
+                            <li><a href="#">我的活动</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-md-10">
+                    <div class="product-content-right">
+                        <div class="woocommerce">
+                            <p>账号：{{request.session.vipuser.username}}</p>
+                            <p>姓名：{{request.session.vipuser.name}}</p>
+                            <p>性别：男</p>
+                            <p>地址：{{request.session.vipuser.address}}</p>
+                            <p>邮编：{{request.session.vipuser.code}}</p>
+                            <p>手机号：{{request.session.vipuser.phone}}</p>
+                            <p>邮箱：{{request.session.vipuser.email}}</p>
+                            <p>注册时间：{{request.session.vipuser.addtime}}</p>
+                            <!-- <form method="post" action="#">
+                                <table cellspacing="0" class="shop_table cart">
+                                    
+                                </table>
+                            </form> -->
+
+                            <div class="cart-collaterals">
+
+
+                            <div class="cross-sells">
+                                <h3>你也可能需要</h3>
+                                <ul class="products">
+                                    <li class="product">
+                                        <a href="single-product.html">
+                                            <img width="325" height="325" alt="T_4_front" class="attachment-shop_catalog wp-post-image" src="{% static 'myweb/img/product-2.jpg' %}">
+                                            <h3>笔记本电脑</h3>
+                                            <span class="price"><span class="amount">￥5200.00</span></span>
+                                        </a>
+
+                                        <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="22" rel="nofollow" href="single-product.html">立即购买</a>
+                                    </li>
+
+                                    <li class="product">
+                                        <a href="single-product.html">
+                                            <img alt="T_4_front" class="attachment-shop_catalog wp-post-image" src="{% static 'myweb/img/product-3.jpg' %}">
+                                            <h3>苹果手机</h3>
+                                            <span class="price"><span class="amount">￥6500.00</span></span>
+                                        </a>
+
+                                        <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="22" rel="nofollow" href="single-product.html">立即购买</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                            <div class="cart_totals ">
+                                <h2>你的兴趣</h2>
+
+                                <table cellspacing="0">
+                                    <tbody>
+                                        <tr class="cart-subtotal">
+                                            <th>最低价格</th>
+                                            <td><span class="amount">£15.00</span></td>
+                                        </tr>
+
+                                        <tr class="shipping">
+                                            <th>最喜欢物品</th>
+                                            <td></td>
+                                        </tr>
+
+                                        <tr class="order-total">
+                                            <th>最高价格</th>
+                                            <td><strong><span class="amount">£75.00</span></strong> </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            </div>
+                        </div>                        
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+{%endblock%}
+

@@ -1,0 +1,160 @@
+{% extends "myweb/base.html" %}
+{% load static from staticfiles %}
+    
+
+    {%block main_body%}
+    <!-- 主内容区域 -->
+    
+    <div class="product-big-title-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="product-bit-title text-center">
+                        <h2>我的订单</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="single-product-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    
+                    <div class="single-sidebar">
+                        <h2 class="sidebar-title">我的订单</h2>
+                        <ul>
+                            <li><a href="#">未付款订单</a></li>
+                            <li><a href="#">未发货订单</a></li>
+                            <li><a href="#">已发货订单</a></li>
+                            <li><a href="#">已完成订单</a></li>
+                            <li><a href="#">未评价订单</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-md-10">
+                    <div class="product-content-right">
+                        <div class="woocommerce">
+                            <form method="post" action="#">
+                                <table cellspacing="0" class="shop_table cart">
+                                    <thead>
+                                        <tr>
+                                            <th>订单号</th>
+                                            <th class="product-thumbnail">图片</th>
+                                            <th class="product-name">商品名称</th>
+                                            <th class="product-price">单价</th>
+                                            <th class="product-quantity">数量</th>
+                                            <th class="product-subtotal">购买时间</th>
+                                            <th>订单状态</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for shop in detaillist %}
+                                        <tr class="cart_item">
+                                            <td>{{shop.orderid}}</td>
+                                            <td class="product-thumbnail">
+                                                <img width="145" height="145" alt="{{ shop.goods }}" class="shop_thumbnail" src="/static/goods/s_{{ shop.img }}">
+                                            </td>
+
+                                            <td class="product-name">
+                                                {{ shop.name }}
+                                            </td>
+
+                                            <td class="product-price">
+                                                <span class="amount">{{ shop.price }}</span> 
+                                            </td>
+
+                                            <td class="product-quantity">
+                                                {{shop.num}}
+                                            </td>
+
+                                            <td class="product-subtotal">
+                                                {{shop.time}} 
+                                            </td>
+                                            <td class="product-name">
+                                                {% if shop.status == 0 %}
+													新订单
+												{% elif shop.status == 1 %}
+													已发货
+												{% elif shop.status == 2 %}
+													已收货
+												{% else %}
+													无效订单
+												{% endif %}
+                                            </td>
+                                            <td>
+                                            	<a href="{% url 'ordersdetail' shop.id %}" class="view-link">详情</a>
+                                            	<a href="#" class="view-link">删除</a>
+                                            </td>
+                                        </tr>                                       
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </form>
+
+                            <div class="cart-collaterals">
+
+
+                            <div class="cross-sells">
+                                <h3>你也可能需要</h3>
+                                <ul class="products">
+                                    <li class="product">
+                                        <a href="single-product.html">
+                                            <img width="325" height="325" alt="T_4_front" class="attachment-shop_catalog wp-post-image" src="{% static 'myweb/img/product-2.jpg' %}">
+                                            <h3>笔记本电脑</h3>
+                                            <span class="price"><span class="amount">￥5200.00</span></span>
+                                        </a>
+
+                                        <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="22" rel="nofollow" href="single-product.html">立即购买</a>
+                                    </li>
+
+                                    <li class="product">
+                                        <a href="single-product.html">
+                                            <img alt="T_4_front" class="attachment-shop_catalog wp-post-image" src="{% static 'myweb/img/product-3.jpg' %}">
+                                            <h3>苹果手机</h3>
+                                            <span class="price"><span class="amount">￥6500.00</span></span>
+                                        </a>
+
+                                        <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="22" rel="nofollow" href="single-product.html">立即购买</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                            <div class="cart_totals ">
+                                <h2>你的兴趣</h2>
+
+                                <table cellspacing="0">
+                                    <tbody>
+                                        <tr class="cart-subtotal">
+                                            <th>最低价格</th>
+                                            <td><span class="amount">£15.00</span></td>
+                                        </tr>
+
+                                        <tr class="shipping">
+                                            <th>最喜欢物品</th>
+                                            <td></td>
+                                        </tr>
+
+                                        <tr class="order-total">
+                                            <th>最高价格</th>
+                                            <td><strong><span class="amount">£75.00</span></strong> </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            </div>
+                        </div>                        
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+{%endblock%}
+

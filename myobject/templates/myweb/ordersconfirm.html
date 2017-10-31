@@ -1,0 +1,175 @@
+{% extends "myweb/base.html" %}
+{% load static from staticfiles %}
+    
+
+    {%block main_body%}
+    <!-- 主内容区域 -->
+    
+    <div class="single-product-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="single-sidebar">
+                        <h2 class="sidebar-title">Search Products</h2>
+                        <form action="#">
+                            <input type="text" placeholder="Search products...">
+                            <input type="submit" value="Search">
+                        </form>
+                    </div>
+                    
+                    <div class="single-sidebar">
+                        <h2 class="sidebar-title">Products</h2>
+                        <div class="thubmnail-recent">
+                            <img src="{% static 'myweb/img/product-thumb-1.jpg' %}" class="recent-thumb" alt="">
+                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>$700.00</ins> <del>$800.00</del>
+                            </div>                             
+                        </div>
+                        <div class="thubmnail-recent">
+                            <img src="{% static 'myweb/img/product-thumb-1.jpg' %}" class="recent-thumb" alt="">
+                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>$700.00</ins> <del>$800.00</del>
+                            </div>                             
+                        </div>
+                    </div>
+                    
+                    <div class="single-sidebar">
+                        <h2 class="sidebar-title">Recent Posts</h2>
+                        <ul>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-md-8">
+                    <div class="product-content-right">
+                        <div class="woocommerce">
+                            <h2>订单确认页</h2>		
+							<h3>收货地址</h3>
+							<form action="{% url 'ordersinsert' %}" method="post" >
+								{% csrf_token %}
+                                <table cellspacing="0" class="shop_table cart">
+                                    <tr>
+										<td align="right">收件人：</td>
+										<td><input type="text" readonly name="linkman" value="{{request.POST.linkman}}"/></td>
+									</tr>
+									<tr>
+										<td align="right">地址：</td>
+										<td>
+											<input type="text" name="address" value="{{request.POST.address}}"/>
+										</td>
+									</tr>
+									<tr>
+										<td align="right">邮编：</td>
+										<td>
+											<input type="text" name="code" value="{{request.POST.code}}"/>
+										</td>
+									</tr>
+									<tr>
+										<td align="right">电话：</td>
+										<td><input type="text" name="phone" value="{{request.POST.phone}}"/></td>
+									</tr>
+									<tr>
+										<td align="right">总金额：</td>
+										<td>￥:{{request.session.total}}元</td>
+									</tr>
+									<tr>
+										<td colspan="2" align="center">
+											<input type="submit" value="确认下单"/>&nbsp;&nbsp;&nbsp;&nbsp;
+											<input type="reset" value="重置"/>
+										</td>	
+									</tr>
+                                </table>
+                            </form>
+                            <br><br>
+                            <h2>购物车信息</h2>
+					            <table cellspacing="0" class="shop_table cart">
+					                <tr>
+					                    <th>ID号</th>
+					                    <th>名称</th>
+					                    <th>图片</th>
+					                    <th>单价</th>
+					                    <th>数量</th>
+					                    <th>小计</th>
+					                </tr>
+					                {% for shop in request.session.shoplist.values %}
+					                	<tr>
+											<td>{{shop.id}}</td>
+											<td>{{shop.goods}}</td>
+											<td><img src="/static/goods/s_{{ shop.picname }}" width="50"></td>
+											<td>{{shop.price}}</td>
+											<td>{{shop.m}}</td>
+											<td>{% widthratio  shop.price 1 shop.m %}</td>
+					                	<tr>
+					                {% endfor%}
+					            </table>
+
+                            <div class="cart-collaterals">
+
+
+                            <div class="cross-sells">
+                                <h2>You may be interested in...</h2>
+                                <ul class="products">
+                                    <li class="product">
+                                        <a href="single-product.html">
+                                            <img width="325" height="325" alt="T_4_front" class="attachment-shop_catalog wp-post-image" src="{% static 'myweb/img/product-2.jpg' %}">
+                                            <h3>Ship Your Idea</h3>
+                                            <span class="price"><span class="amount">£20.00</span></span>
+                                        </a>
+
+                                        <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="22" rel="nofollow" href="single-product.html">Select options</a>
+                                    </li>
+
+                                    <li class="product">
+                                        <a href="single-product.html">
+                                            <img width="325" height="325" alt="T_4_front" class="attachment-shop_catalog wp-post-image" src="{% static 'myweb/img/product-4.jpg' %}">
+                                            <h3>Ship Your Idea</h3>
+                                            <span class="price"><span class="amount">£20.00</span></span>
+                                        </a>
+
+                                        <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="22" rel="nofollow" href="single-product.html">Select options</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                            <div class="cart_totals ">
+                                <h2>Cart Totals</h2>
+
+                                <table cellspacing="0">
+                                    <tbody>
+                                        <tr class="cart-subtotal">
+                                            <th>Cart Subtotal</th>
+                                            <td><span class="amount">£15.00</span></td>
+                                        </tr>
+
+                                        <tr class="shipping">
+                                            <th>Shipping and Handling</th>
+                                            <td>Free Shipping</td>
+                                        </tr>
+
+                                        <tr class="order-total">
+                                            <th>Order Total</th>
+                                            <td><strong><span class="amount">£15.00</span></strong> </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            </div>
+                        </div>                        
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+{%endblock%}
+

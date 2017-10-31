@@ -1,0 +1,309 @@
+{% extends "myweb/base.html" %}
+{% load static from staticfiles %}
+    
+
+    {%block main_body%}
+    <!-- 主内容区域 -->
+    
+    <div class="product-big-title-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="product-bit-title text-center">
+                        <h2>购物车</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End Page title area -->
+    <link rel="stylesheet" type="text/css" href="{% static 'myweb/css/cart.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'myweb/css/cart-app.css' %}">
+    <div class="mainbody cart" style="margin-top: 80px;">
+    <div class="container">
+      <!-- 购物车详情头 -->
+      <table class="cart-header">
+        <tbody>
+          <tr>
+            <td class="cart-col-select col-md-3 col-xs-3 col-sm-3">
+              <div class="cart-select-all JSelectAll">
+                <div class="mz-checkbox"></div>
+                <span class="cart-select-title">全选</span>
+              </div>
+            </td>
+            <td class="cart-col-name col-md-3 hidden-xs hidden-sm">商品</td>
+            <td class="cart-col-price col-md-2 hidden-xs hidden-sm">单价(元)</td>
+            <td class="cart-col-number col-md-2 hidden-xs hidden-sm">数量</td>
+            <td class="cart-col-total col-md-1 hidden-xs hidden-sm">小计(元)</td>
+            <td class="cart-col-ctrl col-md-1 hidden-xs hidden-sm">操作</td>
+          </tr>
+        </tbody>
+      </table><!-- 购物车详情头 E-->
+      
+      <!-- 购物清单信息列表 -->
+      <div class="cart-merchant-list">
+        <div class="cart-merchant">
+          <table class="cart-merchant-body">
+            <tbody>
+            {% for shop in request.session.shoplist.values %}
+              <tr class="cart-product">
+                <td class="cart-col-select col-md-3 col-xs-4 col-sm-4">  
+                  <div class="mz-checkbox" gid="{{shop.id}}" price="{% widthratio  shop.price 1 shop.m %}"></div> 
+                  <a href="{% url 'detail' shop.id %}" class="cart-product-link" target="_blank">
+                    <img src="/static/goods/s_{{ shop.picname }}" class="cart-product-img" alt="{{ shop.goods }}" width="50">
+                  </a>
+                </td>
+                <td class="cart-col-name col-md-3 col-xs-8 col-sm-8">
+                  <a href="{% url 'detail' shop.id %}" class="cart-product-link" target="_blank">
+                    <p>{{ shop.goods }}</p>
+                  </a>
+                  <p class="">
+                    <span class="cart-product-price">{{ shop.price }}</span>
+                  </p>
+                  <div class="cart-col-number">
+                    <div class="cart-product-number-adder">
+                      <p class="cart-product-number-max show"></p>
+                      <div class="mz-adder">
+                        <button class="mz-adder-subtract disabled"></button>
+                        <div class="mz-adder-num"><input class="mz-adder-input" value="1" type="text"></div>
+                        <button class="mz-adder-add"></button>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="cart-col-price col-md-2 hidden-xs hidden-sm">
+                  <p>
+                    <span class="cart-product-price">{{ shop.price}}</span>
+                  </p>
+                </td>
+                <td class="cart-col-number col-md-2 hidden-xs hidden-sm">
+                  <div class="cart-product-number-adder">
+                    <p class="cart-product-number-max show"></p>
+                    <div class="mz-adder">
+                      <button onclick="window.location='{% url 'shopcartchange' %}?sid={{shop.id}}&num={{shop.m|add:-1}}'" class="mz-adder-subtract"></button>
+                      <div class="mz-adder-num"><input class="mz-adder-input" value="{{ shop.m }}" type="text"></div>
+                      <button onclick="window.location='{% url 'shopcartchange' %}?sid={{shop.id}}&num={{shop.m|add:1}}'" class="mz-adder-add"></button>
+                    </div>
+                  </div>
+                </td>
+                <td class="cart-col-total col-md-1 hidden-xs hidden-sm">
+                  <span class="cart-product-price total">{% widthratio  shop.price 1 shop.m %}</span>
+
+                </td>
+                <td class="cart-col-ctrl col-md-1 hidden-xs hidden-sm">
+                  <a href="{% url 'shopcartdel' shop.id %}">
+                  <div class="cart-product-remove">
+                    <span class="glyphicon glyphicon-remove"></span>
+                  </div>
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div><!-- 购物清单信息列表 E-->
+    </div>
+    <!-- 结算详情 -->
+    <div class="cart-footer" id="cartFooter">
+      <div class="container">
+         <div class="cart-footer-left col-md-6 col-xs-4 col-sm-4">
+           <div class="cart-select-all JSelectAll" data-mdesc="全选按钮" data-mtype="store_cart_all">
+            <div class="mz-checkbox"></div>
+            <span class="cart-select-title">全选</span>
+           </div>
+           <!-- <span class="cart-remove-selected" id="removeSelected">删除选中的商品</span> -->
+           <span class="cart-footer-count">
+            共
+            <span class="cart-footer-num" id="totalCount"></span>
+            件商品
+           </span>
+           <div class="mz-btn btn-danger" onclick="window.location='{% url 'shopcartclear' %}'" id="cartSubmit">清空购物车</div>
+        </div>
+        <div class="cart-footer-right col-md-5 col-md-offset-1 col-sm-offset-2 col-xs-8 col-sm-6">
+          <span class="cart-footer-sum">
+            <span class="cart-footer-text">已优惠</span>
+            <span class="cart-footer-num red" id="totalDiscount">0.00</span>
+            <span class="cart-footer-text">元， 合计(不含运费)：</span>
+            <span class="cart-footer-total" id="totalPrice">0.0</span>
+          </span>
+          <div onclick="window.location='{% url 'ordersform' %}?gids='+loadTotal().join(',')" class="mz-btn btn-success" id="cartSubmit">结算</div>
+        </div>
+      </div>
+    </div><!-- 结算详情 E-->
+</div>
+<script type="text/javascript" src="{% static 'myweb/js/topNav.js' %}"></script>
+<script type="text/javascript">
+    //全选
+    allSelect();
+    //商品数量加减
+    //cartAddMin()
+    loadTotal();
+    
+    var gidlist = [];
+</script>
+    <div class="single-product-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="single-sidebar">
+                        <h2 class="sidebar-title">Search Products</h2>
+                        <form action="#">
+                            <input type="text" placeholder="Search products...">
+                            <input type="submit" value="Search">
+                        </form>
+                    </div>
+                    
+                    <div class="single-sidebar">
+                        <h2 class="sidebar-title">Products</h2>
+                        <div class="thubmnail-recent">
+                            <img src="{% static 'myweb/img/product-thumb-1.jpg' %}" class="recent-thumb" alt="">
+                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>$700.00</ins> <del>$800.00</del>
+                            </div>                             
+                        </div>
+                        <div class="thubmnail-recent">
+                            <img src="{% static 'myweb/img/product-thumb-1.jpg' %}" class="recent-thumb" alt="">
+                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>$700.00</ins> <del>$800.00</del>
+                            </div>                             
+                        </div>
+                    </div>
+                    
+                    <div class="single-sidebar">
+                        <h2 class="sidebar-title">Recent Posts</h2>
+                        <ul>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-md-8">
+                    <div class="product-content-right">
+                        <div class="woocommerce">
+                            <form method="post" action="#">
+                                <table cellspacing="0" class="shop_table cart">
+                                    <thead>
+                                        <tr>
+                                            <th class="product-remove">&nbsp;</th>
+                                            <th class="product-thumbnail">&nbsp;</th>
+                                            <th class="product-name">商品</th>
+                                            <th class="product-price">价格(元)</th>
+                                            <th class="product-quantity">数量</th>
+                                            <th class="product-subtotal">总计(元)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for shop in request.session.shoplist.values %}
+                                        <tr class="cart_item">
+                                            <td class="product-remove">
+                                                <a title="Remove this item" class="remove" href="{% url 'shopcartdel' shop.id %}">×</a> 
+                                            </td>
+
+                                            <td class="product-thumbnail">
+                                                <a href="{% url 'detail' shop.id %}"><img width="145" height="145" alt="{{ shop.goods }}" class="shop_thumbnail" src="/static/goods/s_{{ shop.picname }}"></a>
+                                            </td>
+
+                                            <td class="product-name">
+                                                <a href="{% url 'detail' shop.id %}">{{ shop.goods }}</a> 
+                                            </td>
+
+                                            <td class="product-price">
+                                                <span class="amount">{{ shop.price }}</span> 
+                                            </td>
+
+                                            <td class="product-quantity">
+                                                <div class="quantity buttons_added">
+                                                    <input type="button" class="minus" value="-">
+                                                    <input type="number" size="4" class="input-text qty text" title="Qty" value="1" min="0" step="1">
+                                                    <input type="button" class="plus" value="+">
+                                                </div>
+                                            </td>
+
+                                            <td class="product-subtotal">
+                                                <span class="amount">£15.00</span> 
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="actions" colspan="6">
+                                                <div class="coupon">
+                                                    <label for="coupon_code">Coupon:</label>
+                                                    <input type="text" placeholder="Coupon code" value="" id="coupon_code" class="input-text" name="coupon_code">
+                                                    <input type="submit" value="Apply Coupon" name="apply_coupon" class="button">
+                                                </div>
+                                                <input type="submit" value="Update Cart" name="update_cart" class="button">
+                                                <input type="submit" value="Proceed to Checkout" name="proceed" class="checkout-button button alt wc-forward">
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </form>
+
+                            <div class="cart-collaterals">
+
+
+                            <div class="cross-sells">
+                                <h2>You may be interested in...</h2>
+                                <ul class="products">
+                                    <li class="product">
+                                        <a href="single-product.html">
+                                            <img width="325" height="325" alt="T_4_front" class="attachment-shop_catalog wp-post-image" src="{% static 'myweb/img/product-2.jpg' %}">
+                                            <h3>Ship Your Idea</h3>
+                                            <span class="price"><span class="amount">£20.00</span></span>
+                                        </a>
+
+                                        <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="22" rel="nofollow" href="single-product.html">Select options</a>
+                                    </li>
+
+                                    <li class="product">
+                                        <a href="single-product.html">
+                                            <img width="325" height="325" alt="T_4_front" class="attachment-shop_catalog wp-post-image" src="{% static 'myweb/img/product-4.jpg' %}">
+                                            <h3>Ship Your Idea</h3>
+                                            <span class="price"><span class="amount">£20.00</span></span>
+                                        </a>
+
+                                        <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="22" rel="nofollow" href="single-product.html">Select options</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                            <div class="cart_totals ">
+                                <h2>Cart Totals</h2>
+
+                                <table cellspacing="0">
+                                    <tbody>
+                                        <tr class="cart-subtotal">
+                                            <th>Cart Subtotal</th>
+                                            <td><span class="amount">£15.00</span></td>
+                                        </tr>
+
+                                        <tr class="shipping">
+                                            <th>Shipping and Handling</th>
+                                            <td>Free Shipping</td>
+                                        </tr>
+
+                                        <tr class="order-total">
+                                            <th>Order Total</th>
+                                            <td><strong><span class="amount">£15.00</span></strong> </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            </div>
+                        </div>                        
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+{%endblock%}
